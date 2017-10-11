@@ -1,9 +1,11 @@
 package org.sbuisson.pitest.extension.intercept.git;
 
 import org.pitest.classinfo.ClassByteArraySource;
+import org.pitest.mutationtest.build.InterceptorParameters;
 import org.pitest.mutationtest.build.MutationInterceptor;
 import org.pitest.mutationtest.build.MutationInterceptorFactory;
 import org.pitest.mutationtest.config.ReportOptions;
+import org.pitest.plugin.Feature;
 
 public class GitFileInterceptorFactory implements
         MutationInterceptorFactory {
@@ -19,5 +21,16 @@ public class GitFileInterceptorFactory implements
     }else{
       return new GitModifInterceptor(data, source);
     }
+  }
+
+  public MutationInterceptor createInterceptor(InterceptorParameters params) {
+    return null;
+  }
+
+  public Feature provides() {
+    return Feature.named("GitFileFilter")
+            .withOnByDefault(true)
+            .withDescription(description());
+
   }
 }

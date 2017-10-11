@@ -1,9 +1,11 @@
 package org.sbuisson.pitest.extention.kotlin.intercept;
 
 import org.pitest.classinfo.ClassByteArraySource;
+import org.pitest.mutationtest.build.InterceptorParameters;
 import org.pitest.mutationtest.build.MutationInterceptor;
 import org.pitest.mutationtest.build.MutationInterceptorFactory;
 import org.pitest.mutationtest.config.ReportOptions;
+import org.pitest.plugin.Feature;
 
 public class KotlinDataInterceptorFactory implements
         MutationInterceptorFactory {
@@ -13,7 +15,14 @@ public class KotlinDataInterceptorFactory implements
   }
 
 
-  public MutationInterceptor createInterceptor(ReportOptions data, ClassByteArraySource source) {
-    return new KotlinDataInterceptor( data, source);
+  public Feature provides() {
+    return Feature.named("Kotlin_FileFilter")
+            .withOnByDefault(true)
+            .withDescription(description());
+
+  }
+
+  public MutationInterceptor createInterceptor(InterceptorParameters interceptorParameters) {
+    return new KotlinDataInterceptor(interceptorParameters);
   }
 }

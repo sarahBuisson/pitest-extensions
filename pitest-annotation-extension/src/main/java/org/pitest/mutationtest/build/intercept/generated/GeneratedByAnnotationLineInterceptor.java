@@ -3,15 +3,18 @@ package org.pitest.mutationtest.build.intercept.generated;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseException;
+import com.github.javaparser.Range;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import org.apache.commons.io.input.ReaderInputStream;
+import org.pitest.bytecode.analysis.ClassTree;
 import org.pitest.classinfo.ClassByteArraySource;
 import org.pitest.functional.F;
 import org.pitest.functional.FCollection;
 import org.pitest.functional.Option;
 import org.pitest.functional.prelude.Prelude;
-import org.pitest.mutationtest.build.ClassTree;
+import org.pitest.mutationtest.build.InterceptorParameters;
 import org.pitest.mutationtest.build.InterceptorType;
 import org.pitest.mutationtest.build.MutationInterceptor;
 import org.pitest.mutationtest.config.ReportOptions;
@@ -19,7 +22,9 @@ import org.pitest.mutationtest.engine.Mutater;
 import org.pitest.mutationtest.engine.MutationDetails;
 import org.pitest.mutationtest.tooling.SmartSourceLocator;
 
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.Charset;
 import java.util.*;
 
 
@@ -31,14 +36,14 @@ class GeneratedByAnnotationLineInterceptor implements MutationInterceptor {
 
   Map<String, List<Integer>> excludedLinesByFile = new HashMap<String, List<Integer>>();
 
-  GeneratedByAnnotationLineInterceptor(ReportOptions data, ClassByteArraySource source) {
-    this.data = data;
-    this.source = source;
+  GeneratedByAnnotationLineInterceptor(InterceptorParameters params) {
+    this.data = params.data();
+    this.source = params.source();
     this.locator = new SmartSourceLocator(data.getSourceDirs());
 
   }
 
-  @Override
+  
   public Collection<MutationDetails> intercept(Collection<MutationDetails> mutations, Mutater m) {
     return FCollection.filter(mutations, Prelude.not(isGeneratedLine()));
   }
@@ -47,7 +52,7 @@ class GeneratedByAnnotationLineInterceptor implements MutationInterceptor {
   private F<MutationDetails, Boolean> isGeneratedLine() {
 
     return new F<MutationDetails, Boolean>() {
-      @Override
+      
       public Boolean apply(MutationDetails mutationDetails) {
         return extratExcludedLine(mutationDetails);
 
@@ -65,38 +70,36 @@ class GeneratedByAnnotationLineInterceptor implements MutationInterceptor {
       excludedLinesByFile.put(fileId, excludedLines);
       if (reader.hasSome()) {
         CompilationUnit cu = null;
-        try {
-          cu = JavaParser.parse(reader.value(), false);
+
+          cu = JavaParser.parse(new ReaderInputStream(reader.value(), Charset.defaultCharset()));
           new VoidVisitorAdapter<Object>() {
-            @Override
+            
             public void visit(MarkerAnnotationExpr n, Object arg) {
               super.visit(n, arg);
-              for (int i = n.getBeginLine(); i <= n.getEndLine(); i++) {
-                excludedLines.add(new Integer(i));
+              if(n.getRange().isPresent()) {
+                Range range = n.getRange().get();
+                for (int i = range.begin.line; i <= range.end.line; i++) {
+                  excludedLines.add(new Integer(i));
+                }
               }
             }
           }.visit(cu, null);
-        } catch (ParseException e) {
-          e.printStackTrace();
 
-        }
       }
     }
     return excludedLinesByFile.get(fileId).contains(new Integer(mutationDetails.getLineNumber()));
   }
 
-  @Override
+  
   public InterceptorType type() {
     return InterceptorType.FILTER;
   }
 
-  @Override
   public void begin(ClassTree clazz) {
 
   }
 
 
-  @Override
   public void end() {
 
   }

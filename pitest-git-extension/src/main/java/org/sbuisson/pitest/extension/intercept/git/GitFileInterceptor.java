@@ -13,17 +13,18 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.pitest.bytecode.analysis.ClassTree;
 import org.pitest.classinfo.ClassByteArraySource;
 import org.pitest.functional.F;
 import org.pitest.functional.FCollection;
 import org.eclipse.jgit.lib.Ref;
 import org.pitest.functional.prelude.Prelude;
-import org.pitest.mutationtest.build.ClassTree;
 import org.pitest.mutationtest.build.InterceptorType;
 import org.pitest.mutationtest.build.MutationInterceptor;
 import org.pitest.mutationtest.config.ReportOptions;
 import org.pitest.mutationtest.engine.Mutater;
 import org.pitest.mutationtest.engine.MutationDetails;
+import org.pitest.mutationtest.tooling.DirectorySourceLocator;
 import org.pitest.mutationtest.tooling.SmartSourceLocator;
 
 import java.io.File;
@@ -50,6 +51,7 @@ class GitFileInterceptor implements MutationInterceptor {
   private Map<String,DiffEntry> entryByUpdatedFiles = new HashMap<String,DiffEntry> ();
 
   GitFileInterceptor(ReportOptions data, ClassByteArraySource source) {
+    System.out.println("GitFileInterceptor");
     this.data = data;
     this.source = source;
     this.locator = new SmartSourceLocator(data.getSourceDirs());
@@ -86,11 +88,12 @@ class GitFileInterceptor implements MutationInterceptor {
 
   }
 
-  @Override
+  
   public Collection<MutationDetails> intercept(Collection<MutationDetails> mutations, Mutater m) {
     System.out.println("mutations.size()");
     System.out.println(mutations.size());
-    return FCollection.filter(mutations, Prelude.not(isInScope()));
+    System.out.println( "c"+FCollection.filter(mutations, Prelude.not(isInScope())));
+    return FCollection.filter(mutations, (isInScope()));
   }
 
 
@@ -98,7 +101,7 @@ class GitFileInterceptor implements MutationInterceptor {
 
 
     return new F<MutationDetails, Boolean>() {
-      @Override
+      
       public Boolean apply(MutationDetails mutationDetails) {
         return allowedFile(mutationDetails);
 
@@ -108,22 +111,28 @@ class GitFileInterceptor implements MutationInterceptor {
   }
 
   private boolean allowedFile(MutationDetails mutationDetails) {
-    System.out.println(updatedFiles.contains(mutationDetails.getFilename()));
-    return updatedFiles.contains(mutationDetails.getFilename());
+    System.out.println("cont"+updatedFiles.contains(toFileName(mutationDetails))+" "+toFileName(mutationDetails));
+    return updatedFiles.contains(toFileName(mutationDetails));
   }
 
-  @Override
+  private String toFileName(MutationDetails mutationDetails){
+    File f = new File(mutationDetails.getClassName().asInternalName().replace(".", File.separator));
+    return f.getParent() + File.separator + mutationDetails.getFilename() ;
+  }
   public InterceptorType type() {
     return InterceptorType.FILTER;
   }
 
-  @Override
   public void begin(ClassTree clazz) {
 
     String fileName = srcPath + clazz.name().getPackage().asInternalName() +"/"+ clazz.rawNode().sourceFile;
     DiffEntry diffEntry = this.entryByUpdatedFiles.get(fileName);
     if(diffEntry!=null){
+
     DiffFormatter diffF = new DiffFormatter(System.out);
+
+      RevWalk walk = new RevWalk(repository);
+      diffF.setReader(walk.getObjectReader(), repository.getConfig());
     try {
       diffF.format(Arrays.asList(diffEntry));
     } catch (IOException e) {
@@ -145,7 +154,7 @@ class GitFileInterceptor implements MutationInterceptor {
       diff = new Git(repository).diff().setOldTree(oldTreeParser).setNewTree(newTreeParser).call();
       for (DiffEntry entry : diff) {
         System.out.println("-Entry: " + entry);
-        updatedFiles.add(entry.getNewPath());
+        updatedFiles.add(entry.getNewPath().replace(this.srcPath,""));
         entryByUpdatedFiles.put(entry.getNewPath(),entry);
       }
 
@@ -195,7 +204,7 @@ class GitFileInterceptor implements MutationInterceptor {
   }
 
 
-  @Override
+  
   public void end() {
 
     repository.close();

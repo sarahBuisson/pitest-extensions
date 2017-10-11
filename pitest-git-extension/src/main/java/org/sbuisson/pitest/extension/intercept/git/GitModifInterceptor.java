@@ -13,11 +13,11 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.pitest.bytecode.analysis.ClassTree;
 import org.pitest.classinfo.ClassByteArraySource;
 import org.pitest.functional.F;
 import org.pitest.functional.FCollection;
 import org.pitest.functional.prelude.Prelude;
-import org.pitest.mutationtest.build.ClassTree;
 import org.pitest.mutationtest.build.InterceptorType;
 import org.pitest.mutationtest.build.MutationInterceptor;
 import org.pitest.mutationtest.config.ReportOptions;
@@ -44,6 +44,7 @@ class GitModifInterceptor implements MutationInterceptor {
   private List<String> updatedFiles = new ArrayList<String>();
 
   GitModifInterceptor(ReportOptions data, ClassByteArraySource source) {
+    System.out.println("GitModifInterceptor");
     this.data = data;
     this.source = source;
     this.locator = new SmartSourceLocator(data.getSourceDirs());
@@ -70,7 +71,7 @@ class GitModifInterceptor implements MutationInterceptor {
 
   }
 
-  @Override
+  
   public Collection<MutationDetails> intercept(Collection<MutationDetails> mutations, Mutater m) {
     return FCollection.filter(mutations, Prelude.not(isInScope()));
   }
@@ -79,7 +80,7 @@ class GitModifInterceptor implements MutationInterceptor {
   private F<MutationDetails, Boolean> isInScope() {
 
     return new F<MutationDetails, Boolean>() {
-      @Override
+      
       public Boolean apply(MutationDetails mutationDetails) {
         return extratExcludedLine(mutationDetails);
 
@@ -92,13 +93,13 @@ class GitModifInterceptor implements MutationInterceptor {
     return updatedFiles.contains(mutationDetails.getFilename());
   }
 
-  @Override
+  
   public InterceptorType type() {
     return InterceptorType.FILTER;
   }
 
-  @Override
   public void begin(ClassTree clazz) {
+
 
     try {
 
@@ -163,7 +164,7 @@ class GitModifInterceptor implements MutationInterceptor {
   }
 
 
-  @Override
+  
   public void end() {
 
     repository.close();
