@@ -1,0 +1,11 @@
+pitest-extensions
+
+Extension plugin for the pitest mutation plugin
+
+
+
+
+
+
+##change of the version
+mvn versions:set -DnewVersion=1.0.3-SNAPSHOT
