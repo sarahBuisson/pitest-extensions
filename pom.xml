@@ -6,7 +6,7 @@
 
     <groupId>org.sbuisson</groupId>
     <artifactId>pitest-extensions</artifactId>
-    <version>1.0</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <scm>
@@ -42,7 +42,6 @@
         <module>pitest-scm-extension</module>
         <module>pitest-annotation-extension</module>
         <module>pitest-kotlin-extension</module>
-        <module>pitest-extension-example</module>
     </modules>
     <build>
 
