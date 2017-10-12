@@ -8,9 +8,14 @@
     <artifactId>pitest-extensions</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
+
     <scm>
-        <url>https://svn.apache.org/viewvc/maven</url>
+        <url>https://github.com/sarahBuisson/pitest-extensions</url>
+        <connection>scm:git:git@github.com:sarahBuisson/pitest-extensions.git</connection>
+        <developerConnection>scm:git:git@github.com:sarahBuisson/pitest-extensions.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
+
     <issueManagement>
         <url>https://github.com/sbuisson/pitest-extension</url>
         <system>GitHub</system>
