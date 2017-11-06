@@ -8,6 +8,14 @@
     <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <scm>
+        <url>https://github.com/sarahBuisson/pitest-extensions</url>
+        <connection>scm:git:git@github.com:sarahBuisson/pitest-extensions.git</connection>
+        <developerConnection>scm:git:git@github.com:sarahBuisson/pitest-extensions.git</developerConnection>
+        <tag>pitest-scm-extension-1.0</tag>
+    </scm>
+
+
     <issueManagement>
         <url>https://github.com/sarahBuisson/pitest-extension</url>
         <system>GitHub</system>

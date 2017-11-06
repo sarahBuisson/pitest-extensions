@@ -1,5 +1,6 @@
 *.iml
 .idea/*
+.project
 */target/*
 /pit-lombok/
 /pit-git/
