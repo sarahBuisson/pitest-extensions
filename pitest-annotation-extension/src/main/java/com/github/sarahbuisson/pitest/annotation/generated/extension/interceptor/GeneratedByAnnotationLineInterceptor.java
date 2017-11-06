@@ -87,7 +87,7 @@ class GeneratedByAnnotationLineInterceptor implements MutationInterceptor {
         //No action at the begin
     }
 
-@Override
+    @Override
     public void end() {
         //No action at the end
     }

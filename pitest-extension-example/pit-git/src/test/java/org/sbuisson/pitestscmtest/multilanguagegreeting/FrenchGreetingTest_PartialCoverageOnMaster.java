@@ -22,4 +22,4 @@ public class FrenchGreetingTest_PartialCoverageOnMaster {
         assertEquals("salut, le chien", greeting.greet("le chien"));
     }
 
-   }
+}

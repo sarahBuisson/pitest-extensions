@@ -1,4 +1,5 @@
 package org.sbuisson.pitestscmtest;
+
 /**
  * Created by sbuisson on 07/10/2017.
  */

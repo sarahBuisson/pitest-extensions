@@ -11,14 +11,15 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class MyRequest2 implements Serializable {
 
-   private static final long serialVersionUID = -3548858114709541512L;
-   private Long userId;
+    private static final long serialVersionUID = -3548858114709541512L;
+    private Long userId;
 
-   public void validate() throws IllegalStateException {
-      if(userId != null){
-         throw new IllegalStateException();
-      }
-   }
+    public void validate() throws IllegalStateException {
+        if (userId != null) {
+            throw new IllegalStateException();
+        }
+    }
 
-   class Sub{}
+    class Sub {
+    }
 }

@@ -2,8 +2,10 @@ package com.github.sarahbuisson.pitest.kotlin.extention.interceptor;
 
 import com.github.sarahbuisson.kotlinparser.KotlinLexer;
 import com.github.sarahbuisson.kotlinparser.KotlinParser;
+import com.github.sarahbuisson.pitest.kotlin.extention.grammar.KotlinLinesToIgnoreListener;
 import lombok.Getter;
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.pitest.bytecode.analysis.ClassTree;
@@ -18,9 +20,7 @@ import org.pitest.mutationtest.config.ReportOptions;
 import org.pitest.mutationtest.engine.Mutater;
 import org.pitest.mutationtest.engine.MutationDetails;
 import org.pitest.mutationtest.tooling.SmartSourceLocator;
-import com.github.sarahbuisson.pitest.kotlin.extention.grammar.KotlinLinesToIgnoreListener;
 import org.pitest.util.Log;
-
 
 import java.io.IOException;
 import java.io.Reader;
@@ -61,6 +61,7 @@ public class KotlinDataInterceptor implements MutationInterceptor {
 
     /**
      * visible for test
+     *
      * @param mutationDetails
      * @return
      */
@@ -79,6 +80,7 @@ public class KotlinDataInterceptor implements MutationInterceptor {
 
     /**
      * visible for test
+     *
      * @param mutationDetails
      * @return
      */

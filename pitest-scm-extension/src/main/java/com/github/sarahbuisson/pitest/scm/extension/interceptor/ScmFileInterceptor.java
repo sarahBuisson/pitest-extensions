@@ -2,10 +2,9 @@ package com.github.sarahbuisson.pitest.scm.extension.interceptor;
 
 
 import com.github.sarahbuisson.pitest.scm.extension.common.ScmCommon;
-import org.apache.maven.scm.*;
+import org.apache.maven.scm.ScmException;
 import org.pitest.bytecode.analysis.ClassTree;
 import org.pitest.classinfo.ClassByteArraySource;
-import org.pitest.functional.F;
 import org.pitest.functional.FCollection;
 import org.pitest.mutationtest.build.InterceptorType;
 import org.pitest.mutationtest.build.MutationInterceptor;
@@ -16,16 +15,13 @@ import org.pitest.mutationtest.tooling.SmartSourceLocator;
 import org.pitest.util.Log;
 
 import java.io.File;
-import java.util.*;
+import java.util.Collection;
 import java.util.logging.Logger;
 
-import static org.eclipse.jgit.lib.Constants.encodeASCII;
 
-
-class ScmFileInterceptor  extends ScmCommon implements MutationInterceptor {
+class ScmFileInterceptor extends ScmCommon implements MutationInterceptor {
     private static final Logger LOG = Log
             .getLogger();
-
 
 
     public ScmFileInterceptor(ReportOptions data, ClassByteArraySource source, SmartSourceLocator locator) {
@@ -59,7 +55,7 @@ class ScmFileInterceptor  extends ScmCommon implements MutationInterceptor {
 
     @Override
     public void end() {
-    // nothing to do
+        // nothing to do
     }
 
 }

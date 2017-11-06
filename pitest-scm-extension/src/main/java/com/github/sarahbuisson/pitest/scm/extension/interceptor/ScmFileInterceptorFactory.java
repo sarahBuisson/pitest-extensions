@@ -1,7 +1,5 @@
 package com.github.sarahbuisson.pitest.scm.extension.interceptor;
 
-import org.apache.maven.plugins.annotations.Component;
-import org.apache.maven.scm.manager.ScmManager;
 import org.pitest.mutationtest.build.InterceptorParameters;
 import org.pitest.mutationtest.build.MutationInterceptor;
 import org.pitest.mutationtest.build.MutationInterceptorFactory;

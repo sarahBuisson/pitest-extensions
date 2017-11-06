@@ -13,7 +13,7 @@ public class AllTestsPrioritiser implements TestPrioritiser {
     private final List<TestInfo> sorted;
 
     public AllTestsPrioritiser(List<TestInfo> sorted) {
-        this.sorted=sorted;
+        this.sorted = sorted;
     }
 
     @Override

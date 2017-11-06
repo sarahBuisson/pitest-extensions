@@ -27,14 +27,13 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ScmCommonTest {
-
 
 
     @InjectMocks
@@ -75,7 +74,7 @@ public class ScmCommonTest {
         //When
         List<String> modifiedClass = scmCommon.findModifiedFilesNames();
 
-        assertThat(modifiedClass, Matchers.containsInAnyOrder(rootDirectory.getAbsoluteFile()+"/C1.java"));
+        assertThat(modifiedClass, Matchers.containsInAnyOrder(rootDirectory.getAbsoluteFile() + "/C1.java"));
 
     }
 

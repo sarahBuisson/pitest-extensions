@@ -10,7 +10,7 @@ public class EnglishGreeting_FullCoverageOnMaster extends Greeting {
     @Override
     public String greet(String who) {
 
-        if(who==null || who.isEmpty()){
+        if (who == null || who.isEmpty()) {
             return "is there someone here?";
         }
 

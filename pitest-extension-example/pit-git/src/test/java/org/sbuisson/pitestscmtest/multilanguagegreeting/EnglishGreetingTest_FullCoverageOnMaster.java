@@ -3,7 +3,7 @@ package org.sbuisson.pitestscmtest.multilanguagegreeting;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by sbuisson on 07/10/2017.

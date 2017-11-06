@@ -14,7 +14,7 @@ public class DutchGrussen_NoCoverageOnMaster extends Greeting {
 
     public String grussen(String die) {
 
-        if(die==null || die.isEmpty()){
+        if (die == null || die.isEmpty()) {
             return "Y'a t-il quelqu'un?";
         }
 

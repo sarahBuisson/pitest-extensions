@@ -1,6 +1,5 @@
 package com.github.sarahbuisson.pitest.annotation.generated.extension.interceptor;
 
-import com.github.sarahbuisson.pitest.annotation.generated.extension.interceptor.GeneratedByAnnotationLineInterceptor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +22,8 @@ import java.io.StringReader;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)

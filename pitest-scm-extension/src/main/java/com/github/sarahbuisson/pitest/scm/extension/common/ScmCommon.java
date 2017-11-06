@@ -5,10 +5,9 @@ import lombok.Setter;
 import org.apache.maven.scm.*;
 import org.apache.maven.scm.command.changelog.ChangeLogScmRequest;
 import org.apache.maven.scm.command.changelog.ChangeLogScmResult;
-import org.apache.maven.scm.provider.git.gitexe.GitExeScmProvider;
-import org.apache.maven.scm.command.diff.DiffScmResult;
 import org.apache.maven.scm.manager.BasicScmManager;
 import org.apache.maven.scm.manager.ScmManager;
+import org.apache.maven.scm.provider.git.gitexe.GitExeScmProvider;
 import org.apache.maven.scm.repository.ScmRepository;
 import org.codehaus.plexus.util.StringUtils;
 import org.pitest.classinfo.ClassByteArraySource;
@@ -41,7 +40,7 @@ public class ScmCommon {
     protected String originReference;
 
 
-    protected File scmRootDirectory =  new File(".");
+    protected File scmRootDirectory = new File(".");
     protected ScmManager scmManager;
     protected String scmConnection;
     protected Set<ScmFileStatus> statusToInclude = new HashSet<ScmFileStatus>(Arrays.asList(ScmFileStatus.ADDED, ScmFileStatus.MODIFIED));
@@ -69,7 +68,6 @@ public class ScmCommon {
         }
 
 
-
     }
 
     protected List<String> findModifiedFilesNames() throws ScmException {
@@ -94,6 +92,7 @@ public class ScmCommon {
 
     /**
      * visible for test
+     *
      * @param origine
      * @param destination
      * @param statusToInclude
@@ -146,17 +145,17 @@ public class ScmCommon {
             if (statusToInclude.contains(changeFile.getAction())) {
                 modifiedPaths.add(changeFile.getName());
                 LOG.info("file modified:" + changeFile.getName());
-            }else{
+            } else {
                 LOG.info("file ignored:" + changeFile.getName());
             }
         }
     }
 
-    private void fillModifiedPath(Set<ScmFileStatus> statusToInclude, List<String> modifiedPaths,String fileName) {
+    private void fillModifiedPath(Set<ScmFileStatus> statusToInclude, List<String> modifiedPaths, String fileName) {
 
     }
 
-    private void initScm(){
+    private void initScm() {
         scmManager = new BasicScmManager();
 
         //Add all SCM providers we want to use

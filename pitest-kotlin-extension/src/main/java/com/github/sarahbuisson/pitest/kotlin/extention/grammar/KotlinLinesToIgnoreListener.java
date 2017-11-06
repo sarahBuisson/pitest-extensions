@@ -4,10 +4,12 @@ package com.github.sarahbuisson.pitest.kotlin.extention.grammar;
 import com.github.sarahbuisson.kotlinparser.KotlinParser;
 import com.github.sarahbuisson.kotlinparser.KotlinParserBaseListener;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class KotlinLinesToIgnoreListener extends KotlinParserBaseListener {
-    Set<Integer> linesToIgnore=new HashSet();
+    Set<Integer> linesToIgnore = new HashSet();
 
 
     @Override
@@ -17,7 +19,7 @@ public class KotlinLinesToIgnoreListener extends KotlinParserBaseListener {
         }
     }
 
- @Override
+    @Override
     public void enterClassDeclaration(KotlinParser.ClassDeclarationContext ctx) {
         if (ctx.CLASS() != null) {
             linesToIgnore.add(Integer.valueOf(ctx.CLASS().getSymbol().getLine()));
