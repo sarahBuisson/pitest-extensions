@@ -1,7 +1,7 @@
 *.iml
 .idea/*
 .project
-*/target/*
+**/target/*
 /pit-lombok/
 /pit-git/
 /pitest-git-extension/
