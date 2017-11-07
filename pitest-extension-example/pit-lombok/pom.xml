@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.github.sarahbuisson</groupId>
+    <version>0.4-SNAPSHOT</version>
+
+    <artifactId>pit-lombock</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>me.tomassetti.antlr4c3</groupId>
+            <artifactId>antlr4-c3-kotlin</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.sarahbuisson</groupId>
+            <artifactId>pitest-annotation-extension</artifactId>
+            <version>0.4-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.18</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+
+                <version>1.2.4</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.github.sarahbuisson</groupId>
+                        <artifactId>pitest-annotation-extension</artifactId>
+                        <version>0.4-SNAPSHOT</version>
+                    </dependency>
+
+                </dependencies>
+
+            </plugin>
+
+            <plugin>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <version>1.1.4</version>
+
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>test-compile</id>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

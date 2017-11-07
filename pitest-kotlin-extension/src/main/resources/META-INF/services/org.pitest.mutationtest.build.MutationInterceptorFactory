@@ -1,1 +1,1 @@
-org.sbuisson.pitest.extention.kotlin.intercept.KotlinDataInterceptorFactory
+com.github.sarahbuisson.pitest.kotlin.extention.interceptor.KotlinDataInterceptorFactory
