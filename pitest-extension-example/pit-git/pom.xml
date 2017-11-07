@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.sarahbuisson</groupId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.4-SNAPSHOT</version>
 
     <artifactId>pit-git</artifactId>
     <packaging>jar</packaging>
@@ -27,7 +27,7 @@
                     <dependency>
                         <groupId>com.github.sarahbuisson</groupId>
                         <artifactId>pitest-scm-extension</artifactId>
-                        <version>0.1-SNAPSHOT</version>
+                        <version>0.4-SNAPSHOT</version>
                     </dependency>
 
                 </dependencies>

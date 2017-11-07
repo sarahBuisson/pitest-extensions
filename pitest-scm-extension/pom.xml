@@ -5,11 +5,11 @@
     <parent>
         <artifactId>pitest-extensions</artifactId>
         <groupId>com.github.sarahbuisson</groupId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.4-SNAPSHOT</version>
     </parent>
     <artifactId>pitest-scm-extension</artifactId>
     <packaging>jar</packaging>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.4-SNAPSHOT</version>
 
 
     <scm>
