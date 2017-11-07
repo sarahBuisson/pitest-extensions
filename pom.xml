@@ -14,6 +14,20 @@
              <tag>pitest-extensions-0.1</tag>
     </scm>
 
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>sbuisson</id>
+            <name>Sarah Buisson</name>
+            <email>sarahbuisson@users.noreply.github.com</email>
+        </developer>
+    </developers>
 
     <issueManagement>
         <url>https://github.com/sarahBuisson/pitest-extension</url>
