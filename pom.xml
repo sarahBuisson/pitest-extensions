@@ -9,9 +9,9 @@
 
     <scm>
         <url>https://github.com/sarahBuisson/pitest-extensions</url>
-        <connection>scm:git:git://github.com:sarahBuisson/pitest-extensions</connection>
-        <developerConnection>scm:git:git://github.com:sarahBuisson/pitest-extensions</developerConnection>
-        <tag>pitest-extensions-0.1</tag>
+        <connection>scm:git:git://github.com/sarahBuisson/pitest-extensions</connection>
+
+             <tag>pitest-extensions-0.1</tag>
     </scm>
 
 
