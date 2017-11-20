@@ -4,14 +4,16 @@
 
     <groupId>com.github.sarahbuisson</groupId>
     <artifactId>pitest-extensions</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.3</version>
     <packaging>pom</packaging>
 
+    <name>pitest-extension-parent</name>
+    <url>https://github.com/sarahBuisson/pitest-extensions</url>
     <scm>
         <url>https://github.com/sarahBuisson/pitest-extensions</url>
         <connection>scm:git:git://github.com/sarahBuisson/pitest-extensions</connection>
 
-             <tag>pitest-extensions-0.1</tag>
+             <tag>pitest-extensions-0.3</tag>
     </scm>
 
     <licenses>
@@ -200,9 +202,16 @@
         </plugins>
 
     </build>
-
+<reporting>
+<plugins>
+    <plugin></plugin>
+</plugins>
+</reporting>
 
     <distributionManagement>
+        <site><name>${project.basedir}/stage</name>
+        <id>idSite</id>
+        <url>http://hello</url></site>
         <snapshotRepository>
             <id>ossrh</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>

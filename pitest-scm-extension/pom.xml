@@ -5,18 +5,18 @@
     <parent>
         <artifactId>pitest-extensions</artifactId>
         <groupId>com.github.sarahbuisson</groupId>
-        <version>0.4-SNAPSHOT</version>
+        <version>0.3</version>
     </parent>
     <artifactId>pitest-scm-extension</artifactId>
     <packaging>jar</packaging>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.3</version>
 
 
     <scm>
         <url>https://github.com/sarahBuisson/pitest-extensions</url>
         <connection>scm:git:git@github.com:sarahBuisson/pitest-extensions.git</connection>
         <developerConnection>scm:git:git@github.com:sarahBuisson/pitest-extensions.git</developerConnection>
-        <tag>pitest-extensions-0.1</tag>
+        <tag>pitest-extensions-0.3</tag>
     </scm>
 
 
@@ -60,6 +60,11 @@
             <version>1.16.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.hamcrest</groupId>
