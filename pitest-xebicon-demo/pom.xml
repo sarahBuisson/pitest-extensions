@@ -133,7 +133,7 @@
                             <timeoutConstant>4000</timeoutConstant>
 
                             <pluginConfiguration>
-                                <originReference>origin/test</originReference>
+                                <originReference>origin/test2</originReference>
 
                                 <scmConnection>scm:git:git@github.com:sarahBuisson/pitest-scm-test.git</scmConnection>
                                 <scmRootDirectory>${project.basedir}/../</scmRootDirectory>
