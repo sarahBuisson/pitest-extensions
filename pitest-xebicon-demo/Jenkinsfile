@@ -1,0 +1,185 @@
+        def sonarQubeUrl="http://sonarqube:9000"
+        def githubOrganization="sarahBuisson"
+        def githubRepository="pitest-xebicon-demo"
+
+
+void setBuildStatus(String url, String context, String message, String state, String backref){
+  step([
+    $class: "GitHubCommitStatusSetter",
+    reposSource: [$class: "ManuallyEnteredRepositorySource", url: url ],
+    contextSource: [$class: "ManuallyEnteredCommitContextSource", context: context ],
+    errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+    statusBackrefSource: [ $class: "ManuallyEnteredBackrefSource", backref: backref ],
+    statusResultSource: [ $class: "ConditionalStatusResultSource", results: [
+        [$class: "AnyBuildResult", message: message, state: state]] ]
+  ]);
+}
+
+String getRepoURL() {
+  sh "git config --get remote.origin.url"
+  sh "git config --get remote.origin.url > originurl"
+  def originurl = readFile("originurl").trim()
+  return originurl
+}
+
+
+
+def getItem(branchName) {
+ Jenkins.instance.getItemByFullName("sonar-openedge/${branchName}")
+}
+
+
+def getTitle(json) {
+   def slurper = new groovy.json.JsonSlurper()
+   def jsonObject = slurper.parseText(json.content)
+   jsonObject.title
+}
+
+def isUp(url){
+ def r = sh script: 'wget -q '+url+' -O /dev/null', returnStatus: true
+
+ echo "up $r"
+      return (r==0)
+}
+
+
+
+
+void sendCommentToPullRequest(String repoGithub,String prId, String messageContent){
+
+     def SHA1 ="SHA1"
+     script {
+        SHA1 = sh(returnStdout: true, script: "git rev-parse HEAD").trim()
+     }
+
+     def message = """{"body": "$messageContent", "commit_id": "$SHA1", "path": "/", "position": 0}"""
+     httpRequest authentication: 'sbuisson-git', httpMode: 'POST', requestBody: "${message}",  url: "https://api.github.com/repos/$repoGithub/issues/${env.CHANGE_ID}/comments"
+}
+
+def getFromPom(pom, balise) {
+    def matcher = readFile(pom) =~ "<$balise>(.+)</$balise>"
+    matcher ? matcher[0][1] : null
+}
+
+
+node {
+    stage('build') {
+
+        checkout scm
+        sh "mvn clean install -B"
+
+    }
+    stage('metrics') {
+        def databaseSonarParam = " -Dsonar.jdbc.username=ci_user -Dsonar.jdbc.password=ci -Dsonar.jdbc.url=jdbc:postgresql://postgres:5432/ci "
+        def sonarParam = " -Dsonar.host.url=$sonarQubeUrl -Dsonar.login=admin -Dsonar.password=admin "
+        //TODO : use credential for password sonar
+        def jenkinsJobUrl="http://localhost:8080/job/$githubOrganization/job/$githubRepository/view/change-requests/job/${env.BRANCH_NAME}"
+        http://localhost:8080/job/sarahbuisson/job/jenkinsCraft/view/change-requests/job/PR-18/HTML_site/pit-reports/index.html
+
+        def githubProject="sarahBuisson/pitest-xebicon-demo"
+        def groupId="com.github.sarahbuisson"
+        def artifactId="pitest-xebicon-demo"
+
+        if ("master" == env.BRANCH_NAME) {
+            if (isUp(sonarQubeUrl)){
+
+                echo("sonar master")
+                sh "mvn sonar:sonar -Dsonar.analysis.mode=issues $sonarParam $databaseSonarParam  -B "
+
+            }
+            sh "mvn pitest:mutationCoverage -Pquality -B"
+            publishHTML([allowMissing: true, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'target/pit-reports', reportFiles: '*', reportName: 'pitest site', reportTitles: 'pitest'])
+
+            try{
+                sh "mvn universal-module-aggregator:aggregate -Pquality -B -U"
+            }catch ( e){
+                echo e.toString();
+            }
+            //build site ( for documentation)
+            sh "mvn site -Pquality -U site:stage"
+            publishHTML([allowMissing: true, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'target/staging', reportFiles: '*', reportName: 'HTML site', reportTitles: 'site'])
+
+        }
+        else if(!env.BRANCH_NAME.startsWith("PR-")){
+
+            if(isUp(sonarQubeUrl)){
+
+                echo("sonar branch ${env.BRANCH_NAME}")
+                sh "mvn sonar:sonar -Dsonar.analysis.mode=issues $sonarParam $databaseSonarParam  -B "
+
+            }
+            sh "mvn pitest:mutationCoverage -Pquality -B"
+            publishHTML([allowMissing: true, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'target/pit-reports', reportFiles: '*', reportName: 'pitest site', reportTitles: 'pitest'])
+
+            try{
+                sh "mvn universal-module-aggregator:aggregate -Pquality -B -U"
+            }catch ( e){
+                echo e.toString();
+            }
+            //build site ( for documentation)
+            sh "mvn site -Pquality -U site:stage"
+            publishHTML([allowMissing: true, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'target/staging', reportFiles: '*', reportName: 'HTML site', reportTitles: 'site'])
+
+
+        } else {
+
+
+            def githubUrl = "${env.CHANGE_URL}"
+
+            def resume = "Résumé du build : <br/>"
+
+            resume+="<a href='${jenkinsJobUrl}/${env.BUILD_NUMBER}/console'>logs</a><br/>"
+
+            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'sbuisson-git', usernameVariable: 'GH_LOGIN', passwordVariable: 'GH_PASSWORD']]) {
+                withCredentials([[$class: 'StringBinding', credentialsId: ' git-token', variable: 'OATH']]) {
+                    def githubSonarParam="-Dsonar.github.pullRequest=${env.CHANGE_ID}\
+                                                        -Dsonar.github.repository=$githubProject \
+                                                        -Dsonar.github.login=${env.GH_LOGIN} \
+                                                        -Dsonar.github.oauth=${env.GH_PASSWORD}  \
+                                                        -Dsonar.verbose=true "
+                    // -Dsonar.github.password=${env.GH_PASSWORD}
+
+                    //  def htmlReportUrl="http://localhost:8080/job/sarahbuisson/job/jenkinsCraft/view/change-requests/job/PR-18/HTML_site/pit-reports/index.html"
+
+                    //sonar
+                    if(isUp(sonarQubeUrl)){
+                        sh "mvn sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.issuesReport.html.enable=true -Dsonar.issuesReport.json.enable=true $sonarParam $databaseSonarParam $githubSonarParam -B"
+
+                        echo "metrics sonar"
+
+                        publishHTML([allowMissing: true, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'target/issues-report/', reportFiles: '*', reportName: 'sonar site', reportTitles: 'sonar'])
+                        resume+="rapport sonar : and <a href='${jenkinsJobUrl}//sonar_site/issues-report.html'>Pull-request</a> et <a href='http://localhost:9000/dashboard?id=$groupId%3A$artifactId'>master</a>(pour comparaison)  <br/>"
+                    }
+
+
+
+                    // pitest
+                    sh "mvn pitest:mutationCoverage -Ppull-request  -DoriginReference=refs/remotes/origin/${env.BRANCH_NAME} -B"
+                    publishHTML([allowMissing: true, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'target/pit-reports', reportFiles: '*', reportName: 'pitest site', reportTitles: 'pitest'])
+                    resume+="rapport pitest : <a href='${jenkinsJobUrl}//HTML_site//pit-reports/index.html'>here</a> <br/>"
+
+                    try{
+                        sh "mvn universal-module-aggregator:aggregate -Pquality -B -U"
+                    }catch ( e){
+                        echo e.toString();
+                    }
+
+                    //build site ( for documentation)
+                    sh "mvn site -Pquality -U site:stage"
+                    publishHTML([allowMissing: true, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'target/staging', reportFiles: '*', reportName: 'HTML site', reportTitles: 'site'])
+                    resume+="documentation : <a href='${jenkinsJobUrl}//HTML_site/project-info.html'>here</a> <br/>"
+
+
+
+
+                    resume+="job : ${env.JOB_NAME}"
+
+                    sendCommentToPullRequest(githubOrganization+"/"+githubRepository, env.CHANGE_ID, resume)
+                }
+            }
+        }
+
+    }
+
+}
+
