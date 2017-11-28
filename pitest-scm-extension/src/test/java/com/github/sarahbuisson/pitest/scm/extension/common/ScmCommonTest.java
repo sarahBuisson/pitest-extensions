@@ -57,6 +57,7 @@ public class ScmCommonTest {
         //scmCommon.setScmManager(scmManager);
         when(data.getSourceDirs()).thenReturn(Arrays.asList(rootDirectory));
 
+       // data.setSourceDirs(Arrays.asList(rootDirectory));
     }
 
     @Test
@@ -74,7 +75,7 @@ public class ScmCommonTest {
         //When
         List<String> modifiedClass = scmCommon.findModifiedFilesNames();
 
-        assertThat(modifiedClass, Matchers.containsInAnyOrder(rootDirectory.getAbsoluteFile() + "/C1.java"));
+        assertThat(modifiedClass, Matchers.containsInAnyOrder( "C1.java"));
 
     }
 

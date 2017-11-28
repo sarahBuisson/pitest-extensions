@@ -19,6 +19,7 @@ import org.pitest.mutationtest.tooling.SmartSourceLocator;
 import org.pitest.util.Log;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -77,11 +78,13 @@ public class ScmCommon {
 
 
             try {
-                List<String> modifiedPaths = changesBetweenBranchs(originReference, destinationReference, statusToInclude, repository, new ScmFileSet(scmRootDirectory));
-                FunctionalList<String> modifiedFullPaths = FCollection.flatMap(modifiedPaths, s -> Arrays.asList(scmRootDirectory.getAbsolutePath() + "/" + s));
+                List<String> modifiedPaths = changesBetweenBranchs(originReference, destinationReference, statusToInclude, repository, new ScmFileSet(new File(".").getCanonicalFile()));
+                FunctionalList<String> modifiedFullPaths = FCollection.map(modifiedPaths, s -> s);
                 return modifiedFullPaths;
             } catch (ScmException e) {
                 LOG.throwing("", "", e);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
             return Collections.emptyList();
