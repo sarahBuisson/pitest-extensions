@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.sarahbuisson</groupId>
-    <version>0.3</version>
+    <version>0.4-SNAPSHOT</version>
 
     <artifactId>pit-kotlin</artifactId>
 
@@ -43,7 +43,7 @@
                     <dependency>
                         <groupId>com.github.sarahbuisson</groupId>
                         <artifactId>pitest-kotlin-extension</artifactId>
-                        <version>0.4-SNAPSHOT</version>
+                        <version>0.5-SNAPSHOT</version>
                     </dependency>
 
                 </dependencies>
