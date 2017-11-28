@@ -202,11 +202,6 @@
         </plugins>
 
     </build>
-<reporting>
-<plugins>
-    <plugin></plugin>
-</plugins>
-</reporting>
 
     <distributionManagement>
         <site><name>${project.basedir}/stage</name>
