@@ -44,7 +44,15 @@ class ScmFileInterceptor extends ScmCommon implements MutationInterceptor {
 
     @Override
     public Collection<MutationDetails> intercept(Collection<MutationDetails> mutations, Mutater mutater) {
-        return FCollection.filter(mutations, mutationDetails -> acceptableClasses.contains(toFileName(mutationDetails)));
+        return FCollection.filter(mutations, mutationDetails -> {
+            String mutationFile = toFileName(mutationDetails);
+            LOG.info("mutation of the file" + mutationFile);
+            LOG.info("acceptable" + acceptableClasses);
+           return !FCollection.filter(acceptableClasses, accepted -> {
+                return mutationFile.endsWith(accepted);
+            }).isEmpty();
+
+            });
     }
 
     private String toFileName(MutationDetails mutationDetails) {

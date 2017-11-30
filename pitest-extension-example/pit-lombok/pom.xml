@@ -17,7 +17,7 @@
         <dependency>
             <groupId>com.github.sarahbuisson</groupId>
             <artifactId>pitest-annotation-extension</artifactId>
-            <version>0.4-SNAPSHOT</version>
+            <version>0.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -54,7 +54,7 @@
                     <dependency>
                         <groupId>com.github.sarahbuisson</groupId>
                         <artifactId>pitest-annotation-extension</artifactId>
-                        <version>0.4-SNAPSHOT</version>
+                        <version>0.5-SNAPSHOT</version>
                     </dependency>
 
                 </dependencies>
