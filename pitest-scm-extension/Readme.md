@@ -1,4 +1,4 @@
-#pitest-scm-extension
+# pitest-scm-extension
 
 Extention to the pitest plugin, in order to only mutate the class of code who have been updated between two branches, refs, etc.
 
@@ -6,7 +6,7 @@ The use case is a pull-request: it will only generate the mutation on the class 
 
 Currently only work with **git**.
 Also, it will only mutate the class of code who have been updated, and run all the tests.( Not only the modified tests)
-##how to use :
+## how to use :
 
 ```
  <plugin>
@@ -43,4 +43,6 @@ Also, it will only mutate the class of code who have been updated, and run all t
 **destinationReference**: reference where the modification don't append. Default : defaultBranch of the project ( ie origin/master on git)`
 
 **scmConnection** : url of your git repository
+
+**scmRootDirectory**: path of the root-dir of your project. Please fill with <scmRootDirectory>${project.basedir}</scmRootDirectory> in a no-module-project, <scmRootDirectory>${project.basedir}/..</scmRootDirectory>in a modules project.
 
